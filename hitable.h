@@ -6,7 +6,7 @@ class material;
 vec3 get_random_unit_vector();
 vec3 reflect(const vec3& in, const vec3& n);
 bool refract(const vec3& v, const vec3& n, double ni_over_nt, vec3& refracted);
-float schlick(float cosine, float ref_idx);
+double schlick(double cosine, double ref_idx);
 struct hit_record {
 	double t;//交点在射线上的位置
 	vec3 p;//世界坐标
@@ -38,7 +38,7 @@ public:
 
 class metal :public material {
 public:
-	metal(const vec3& a,const float & f=0.0) :albedo(a),fuzz(min(f,1.0f)) {}
+	metal(const vec3& a,const double & f=0.0) :albedo(a),fuzz(min(f,1.0f)) {}
 	virtual bool scatter(const ray& r_in, const hit_record& rec, vec3& attenuation, ray& scattered)const {
 		vec3 reflect_direction = reflect(r_in.d().normalized(), rec.normal);
 		scattered = ray(rec.p, reflect_direction + vec3(fuzz) * get_random_unit_vector());
@@ -46,21 +46,21 @@ public:
 		return scattered.d().dot(rec.normal) > 0;
 	}
 	vec3 albedo;
-	float fuzz;//粗糙度
+	double fuzz;//粗糙度
 };
 
 //玻璃
 class dielectric :public material {
 public:
-	dielectric(const float& ri):ref_idx(ri){}
+	dielectric(const double& ri):ref_idx(ri){}
 	virtual bool scatter(const ray& r_in, const hit_record& rec, vec3& attenuation, ray& scattered)const {
 		vec3 outward_normal;
 		vec3 reflected = reflect(r_in.d(), rec.normal);
 		double ni_over_nt; 
-		attenuation = vec3(1.0,1.0,1.0);
+		attenuation = vec3(1.00,1.00,1.00);
 		vec3 refracted;
-		float reflect_prob;
-		float cosine;
+		double reflect_prob;
+		double cosine;
 		if (r_in.d().dot(rec.normal) > 0) {//出
 			outward_normal = -rec.normal;
 			ni_over_nt = ref_idx;          
@@ -105,8 +105,8 @@ bool refract( const vec3& v, const vec3& n, double ni_over_nt, vec3& refracted) 
 		return false;//全反射
 	}
 }
-float schlick(float cosine, float ref_idx) {
-	float r0 = (1 - ref_idx) / (1 + ref_idx);
+double schlick(double cosine, double ref_idx) {
+	double r0 = (1 - ref_idx) / (1 + ref_idx);
 	r0 = r0 * r0;
 	return r0 + (1 - r0) * pow((1 - cosine), 5);
 }

@@ -43,10 +43,10 @@ vec3 test_hit(const ray& r, const hitable_list &world,int depth) {
 int main(){
 	//rand(e)
 	uniform_real_distribution<double> rand(-0.5, 0.5);
-	double level = 8;//调整大小
-	double width = 90*level;//画面宽
-	double height = 160*level;//高
-	int ssaa = 128;//每像素精度
+	double level = 8;
+	double width = 90*level;
+	double height = 160*level;
+	int ssaa = 128;
     char image[]= "OutputImage.ppm";
 	ofstream fout(image);
 	fout << "P3\n" << width << " " << height << "\n255\n";

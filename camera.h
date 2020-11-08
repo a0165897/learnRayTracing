@@ -11,11 +11,11 @@ vec3 random_in_unit_disk() {
 }
 class camera {
 public:
-	camera(vec3 lookfrom, vec3 lookat, vec3 vup, float fov, float aspect, float aperture, float focus_dist) {
+	camera(vec3 lookfrom, vec3 lookat, vec3 vup, double fov, double aspect, double aperture, double focus_dist) {
 		ccd_radius = aperture / 2;
-		float theta = fov * PI / 180;
-		float half_height = tan(theta / 2) * focus_dist;
-		float half_width = aspect * half_height;
+		double theta = fov * PI / 180;
+		double half_height = tan(theta / 2) * focus_dist;
+		double half_width = aspect * half_height;
 		w = (lookfrom - lookat).normalized();
 		u = vup.cross(w).normalized();
 		v = w.cross(u);
@@ -35,5 +35,5 @@ private:
 	vec3 u_max;
 	vec3 v_max;
 	vec3 u, v, w;
-	float ccd_radius;
+	double ccd_radius;
 };
