@@ -72,7 +72,8 @@ void ppm2bmp(const char* ppmFileName, const int bpp = 24)
             ppmLine->push_back(currentColor);
         }
     }
-    for (auto i = ppmColor->end() - 1; i >= ppmColor->begin(); i--) {
+    //纵轴存储方向相反 bmp特色
+    for (auto i = ppmColor->rbegin(); i < ppmColor->rend(); i++) {
         for (auto j = (*i)->begin(); j < (*i)->end(); j++) {
             fwrite(&(*j).b, 1, 1, fp);
             fwrite(&(*j).g, 1, 1, fp);
